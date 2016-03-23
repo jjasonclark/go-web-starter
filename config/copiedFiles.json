@@ -1,0 +1,13 @@
+{
+  "build/public": [
+    "assets/*.txt",
+    "assets/*.ico"
+  ],
+  "build/public/js": [
+    "node_modules/jquery/dist/jquery.min.js"
+  ],
+  "build/templates": [
+    "templates/**.*",
+    "!templates/**.html"
+  ]
+}

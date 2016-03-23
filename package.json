@@ -1,0 +1,45 @@
+{
+  "name": "go-web-starter",
+  "version": "0.0.1",
+  "description": "Template for starting Go backed web sites",
+  "private": false,
+  "engines": {
+    "node": ">=5.0.x"
+  },
+  "author": "Jason Clark",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jjasonclark/go-web-starter.git"
+  },
+  "devDependencies": {
+    "browserify": "^13.0.0",
+    "event-stream": "latest",
+    "git-rev": "latest",
+    "glob": "latest",
+    "gulp": "^3.9.1",
+    "gulp-cachebust": "latest",
+    "gulp-clean": "latest",
+    "gulp-concat": "latest",
+    "gulp-imagemin": "latest",
+    "gulp-load-plugins": "latest",
+    "gulp-sass": "latest",
+    "gulp-size": "latest",
+    "gulp-sourcemaps": "latest",
+    "gulp-uglify": "latest",
+    "gulp-util": "latest",
+    "imagemin": "latest",
+    "jquery": "1.12.2",
+    "lodash": "latest",
+    "node-sass": "latest",
+    "rimraf": "latest",
+    "uglify-js": "latest",
+    "vinyl-buffer": "latest",
+    "vinyl-source-stream": "latest"
+  },
+  "scripts": {
+    "clean": "rimraf build",
+    "env": "env",
+    "build": "gulp build"
+  }
+}
