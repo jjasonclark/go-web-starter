@@ -13,11 +13,17 @@
     "url": "git+https://github.com/jjasonclark/go-web-starter.git"
   },
   "devDependencies": {
+    "angular": "^1.5.0",
+    "angular-route": "^1.5.3",
+    "autoprefixer": "latest",
+    "bootstrap": "^3.3.6",
     "browserify": "^13.0.0",
+    "browserify-ngannotate": "latest",
     "event-stream": "latest",
     "git-rev": "latest",
     "glob": "latest",
     "gulp": "^3.9.1",
+    "gulp-angular-templatecache": "latest",
     "gulp-cachebust": "latest",
     "gulp-clean": "latest",
     "gulp-concat": "latest",

@@ -7,6 +7,7 @@ var exec = require('child_process').exec;
 var git = require('git-rev');
 var glob = require('glob');
 var gulp = require('gulp');
+var ngAnnotate = require('browserify-ngannotate');
 var source = require('vinyl-source-stream');
 var copiedFiles = require('./config/copiedFiles.json');
 var packageJson = require('./package.json');
@@ -14,6 +15,15 @@ var cachebust = new $.cachebust();
 
 var config = {
   outputName: 'app',
+  templateCache: {
+    file: "templates.js",
+    options: {
+      module: 'app',
+      transformUrl: function(url) {
+        return url.replace(/\.nghtml$/, ".html");
+      }
+    }
+  },
   packedAssetName: 'assets.go',
   serveLiveAssets: !$.util.env.production,
   appName: packageJson.name,
@@ -22,19 +32,23 @@ var config = {
 var paths = {
   base: "assets",
   js: "assets/js/**.js",
+  angularIncludes: 'assets/js/*/',
   scss: ["assets/css/**/*.scss", "assets/css/**/*.css", "!assets/css/colors.scss"],
   images: "assets/images/**/*",
   html: "assets/*.html",
+  templates: "assets/**/*.nghtml",
   goTemplates: "templates/**.*",
   outputBase: "build",
   goOutput: "build/templates",
-  assetOutput: "build/public"
+  assetOutput: "build/public",
+  distOutput: "dist"
 };
 
 gulp.task('clean', function() {
   return gulp.src([
       paths.goOutput,
       paths.assetOutput,
+      paths.distOutput,
       paths.outputBase + "/" + config.packedAssetName,
       paths.outputBase + "/" + config.outputName
     ]).
@@ -67,7 +81,9 @@ gulp.task("js-assets", function(cb) {
       return browserify({
           entries: filename,
           debug: true,
-          external: ['jquery']
+          paths: paths.angularIncludes,
+          external: ['angular', 'jquery'],
+          transform: [ngAnnotate]
         }).bundle().
         pipe(source(filename.replace(paths.base + '/', ''))).
         pipe(buffer()).
@@ -90,14 +106,23 @@ gulp.task("style-assets", function() {
     pipe($.size({ title: "stylesheets" }));
 });
 
-gulp.task("html-pages", ["compile-assets"], function() {
+gulp.task('templatecache', ["compile-assets"], function() {
+  return gulp.src(paths.templates).
+    pipe($.angularTemplatecache(config.templateCache.file, config.templateCache.options)).
+    pipe(cachebust.resources()).
+    pipe(cachebust.references()).
+    pipe(gulp.dest(paths.assetOutput + "/js")).
+    pipe($.size({ title: "templates" }));
+});
+
+gulp.task("html-pages", ["compile-assets", "templatecache"], function() {
   return gulp.src(paths.html).
     pipe(cachebust.references()).
     pipe(gulp.dest(paths.assetOutput)).
     pipe($.size({ title: "html pages"}));
 });
 
-gulp.task("go-templates:html", ["compile-assets"], function() {
+gulp.task("go-templates:html", ["compile-assets", "templatecache"], function() {
   return gulp.src(paths.goTemplates).
     pipe(cachebust.references()).
     pipe(gulp.dest(paths.goOutput)).
@@ -120,17 +145,23 @@ gulp.task('bindata', ["build-web", "go-templates:html"], function(cb) {
 gulp.task('build-app', ['bindata'], function(cb) {
   git.long(function(buildSha) {
     var ldFlags = [
-      '-X main.AppName=' + config.appName,
-      '-X main.BuildSHA=' + buildSha,
+      "-X main.AppName='" + config.appName + "'",
+      "-X main.BuildSHA='" + buildSha + "'",
       "-X main.Version='" + config.version + "'"
     ].join(' ');
-    var cmd = 'go build -ldflags "' + ldFlags + '" -v -o build/' + config.outputName + ' .';
+    var cmd = [
+      'go build',
+      '-ldflags "' + ldFlags + '"',
+      '-v',
+      '-o ' + paths.distOutput + '/' + config.outputName,
+      '.'
+    ].join(' ');
     exec(cmd, cb);
   });
 });
 
 gulp.task("compile-assets", ["copy-files", "style-assets", "image-assets", "js-assets"]);
-gulp.task("build-web", ["compile-assets", "html-pages"]);
+gulp.task("build-web", ["compile-assets", "templatecache", "html-pages"]);
 gulp.task("build", ["build-app"]);
 
 gulp.task("default", ["build-app"]);
