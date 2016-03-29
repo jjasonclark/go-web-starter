@@ -139,7 +139,7 @@ gulp.task('bindata', ["build-web", "go-templates:html"], function(cb) {
     paths.goOutput + '/...',
     paths.assetOutput + '/...'
   ].join(" ");
-	exec(cmd, cb);
+  exec(cmd, cb);
 });
 
 gulp.task('build-app', ['bindata'], function(cb) {
