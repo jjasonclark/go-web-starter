@@ -3,10 +3,10 @@ package main
 import "net/http"
 
 func appHandler() http.Handler {
-	return http.HandlerFunc(appPage)
+	return http.HandlerFunc(appHandlerFunc)
 }
 
-func appPage(w http.ResponseWriter, r *http.Request) {
+func appHandlerFunc(w http.ResponseWriter, r *http.Request) {
 	handleAsTemplateFile(w, r, "templates/app.html", struct {
 		Title string
 	}{
