@@ -1,5 +1,6 @@
 angular.module('app', ['ngRoute']).
-  config(function($routeProvider, $locationProvider) {
+  config(function($routeProvider, $locationProvider, $httpProvider) {
+    $httpProvider.interceptors.push('apiInterceptor');
     $locationProvider.html5Mode(false).hashPrefix("!");
     $routeProvider.
       when("/", {
@@ -7,3 +8,5 @@ angular.module('app', ['ngRoute']).
       }).
       otherwise("/");
   });
+require('./apiInterceptor');
+require('../services/authTokenService');
