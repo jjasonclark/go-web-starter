@@ -129,39 +129,8 @@ gulp.task("go-templates:html", ["compile-assets", "templatecache"], function() {
     pipe($.size({ title: "Go template html pages"}));
 });
 
-gulp.task('bindata', ["build-web", "go-templates:html"], function(cb) {
-  var extraParams = config.serveLiveAssets ? "-debug" : null;
-  var cmd = [
-    'go-bindata',
-    '-o ' + config.packedAssetName,
-    extraParams,
-    '-prefix ' + paths.outputBase,
-    paths.goOutput + '/...',
-    paths.assetOutput + '/...'
-  ].join(" ");
-  exec(cmd, cb);
-});
-
-gulp.task('build-app', ['bindata'], function(cb) {
-  git.long(function(buildSha) {
-    var ldFlags = [
-      "-X main.AppName='" + config.appName + "'",
-      "-X main.BuildSHA='" + buildSha + "'",
-      "-X main.Version='" + config.version + "'"
-    ].join(' ');
-    var cmd = [
-      'go build',
-      '-ldflags "' + ldFlags + '"',
-      '-v',
-      '-o ' + paths.distOutput + '/' + config.outputName,
-      '.'
-    ].join(' ');
-    exec(cmd, cb);
-  });
-});
-
 gulp.task("compile-assets", ["copy-files", "style-assets", "image-assets", "js-assets"]);
 gulp.task("build-web", ["compile-assets", "templatecache", "html-pages"]);
-gulp.task("build", ["build-app"]);
-
-gulp.task("default", ["build-app"]);
+gulp.task("all-assets", ["build-web", "go-templates:html"]);
+gulp.task("build", ["all-assets"]);
+gulp.task("default", ["build"]);
