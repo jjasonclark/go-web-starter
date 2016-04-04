@@ -5,8 +5,8 @@ import "net/http"
 func createRouter() http.Handler {
 	mux := http.NewServeMux()
 	mux.Handle("/app", appHandler())
-	mux.Handle("/", rootHandler())
 	mux.Handle("/api/", http.StripPrefix("/api", apiRoutes()))
+	mux.Handle("/", rootHandler("public"))
 
 	return middlewareStack(mux)
 }
