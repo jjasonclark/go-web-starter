@@ -11,7 +11,6 @@ var ngAnnotate = require('browserify-ngannotate');
 var source = require('vinyl-source-stream');
 var copiedFiles = require('./config/copiedFiles.json');
 var packageJson = require('./package.json');
-var cachebust = new $.cachebust();
 
 var config = {
   outputName: 'app',
@@ -43,6 +42,17 @@ var paths = {
   assetOutput: "build/public",
   distOutput: "dist"
 };
+
+var cachebust;
+if (config.serveLiveAssets) {
+    // create noop version of cachebust
+    cachebust = {
+      resources: $.util.noop,
+      references: $.util.noop,
+    };
+} else {
+  cachebust = new $.cachebust();
+}
 
 gulp.task('clean', function() {
   return gulp.src([
