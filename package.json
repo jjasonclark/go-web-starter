@@ -1,6 +1,6 @@
 {
   "name": "go-web-starter",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Template for starting Go backed web sites",
   "private": false,
   "engines": {
