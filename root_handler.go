@@ -23,7 +23,7 @@ type rootPages struct {
 
 func (h rootPages) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path == "/" && r.Method == "GET" {
-		handleAsTemplateFile(w, r, "templates/index.html", struct {
+		handleAsTemplateFile(w, http.StatusOK, "templates/index.html", struct {
 			Title string
 		}{
 			AppName,

@@ -2,23 +2,37 @@ package main
 
 import (
 	"html/template"
+	"mime"
 	"net/http"
+	"path"
 )
 
 const (
-	// HTMLContentType Return type for generated web pages
-	HTMLContentType = "text/html;utf-8"
+	// JSONContentType Return type for JSON responses
+	JSONContentType = "application/json;charset=utf-8"
 )
 
-func handleAsTemplateFile(w http.ResponseWriter, r *http.Request, n string, data interface{}) error {
-	f, err := Asset(n)
+func handleAsTemplateFile(w http.ResponseWriter, statusCode int, templatePath string, data interface{}) error {
+	t, err := fetchTemplate(templatePath)
 	if err != nil {
 		return err
 	}
-	w.Header().Add("CONTENT-TYPE", HTMLContentType)
-	t, err := template.New("anonymous").Parse(string(f))
-	if err != nil {
-		return err
-	}
+	setContentType(w, templatePath)
+	w.WriteHeader(statusCode)
 	return t.Execute(w, data)
+}
+
+func fetchTemplate(templatePath string) (*template.Template, error) {
+	f, err := Asset(templatePath)
+	if err != nil {
+		return nil, err
+	}
+	return template.New("anonymous").Parse(string(f))
+}
+
+func setContentType(w http.ResponseWriter, templatePath string) {
+	mimeType := mime.TypeByExtension(path.Ext(templatePath))
+	if mimeType != "" {
+		w.Header().Set("CONTENT-TYPE", mimeType)
+	}
 }

@@ -7,7 +7,7 @@ func appHandler() http.Handler {
 }
 
 func appHandlerFunc(w http.ResponseWriter, r *http.Request) {
-	handleAsTemplateFile(w, r, "templates/app.html", struct {
+	handleAsTemplateFile(w, http.StatusOK, "templates/app.html", struct {
 		Title string
 	}{
 		Title: AppName,
