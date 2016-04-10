@@ -14,6 +14,7 @@ GIT_BIN = git
 GOBUILD = go build
 GULP_BIN = ./node_modules/.bin/gulp
 NODE_BIN = node
+GULP_OPTIONS =
 
 OUTPUT_NAME = app
 APP_NAME = $(shell $(NODE_BIN) -e "console.log(require('./package.json')['name'])")
@@ -21,13 +22,13 @@ VERSION = $(shell $(NODE_BIN) -e "console.log(require('./package.json')['version
 BUILD_SHA = $(shell $(GIT_BIN) rev-parse HEAD)
 
 ifdef DOCKER
-GOBUILD = GOOS=linux GOARCH=386 go build
+GOBUILD = GOOS=linux GOARCH=386 go build -a -tags netgo -installsuffix netgo
 PRODUCTION = 1
 endif
 
 ifdef PRODUCTION
 BINDATA_BIN = go-bindata
-GULP_BIN = $(GULP_BIN) --production
+GULP_OPTIONS = --production
 endif
 
 all: $(DIST_PATH)/$(OUTPUT_NAME)
@@ -40,10 +41,10 @@ clean:
 
 .PHONY: assets
 assets:
-	$(GULP_BIN)
+	$(GULP_BIN) $(GULP_OPTIONS)
 
 $(OUTPUT_PATH)/public/favicon.ico:
-	$(GULP_BIN)
+	$(GULP_BIN) $(GULP_OPTIONS)
 
 .PHONY: debends
 debends:
