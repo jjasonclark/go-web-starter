@@ -1,11 +1,13 @@
 angular.module("app").
-  factory('apiInterceptor', function() {
+  factory('apiInterceptor', function(authTokenService) {
+    var jsonContentType = 'application/json;charset=utf-8';
     var whiteListPrefixes = [
       '/api/'
     ];
 
     function isAPIPath(url) {
-      for(var path in whiteListPrefixes) {
+      for(var index in whiteListPrefixes) {
+        var path = whiteListPrefixes[index];
         var result = url.split(path);
         if (result.length >= 2 && result[0] === "") {
           return true;
@@ -16,8 +18,12 @@ angular.module("app").
 
     function addAPIHeaders(config) {
       config.headers['X-Requested-With'] = "XMLHttpRequest";
-      config.headers['CONTENT-TYPE'] = 'application/json;charset=utf-8';
-      config.headers['ACCEPT'] = 'application/json;charset=utf-8';
+      config.headers['Content-Type'] = jsonContentType;
+      config.headers.accept = jsonContentType;
+      var token = authTokenService.get();
+      if (token && token !== "") {
+        config.headers.Authorization = "Bearer " + token;
+      }
       return config;
     }
 

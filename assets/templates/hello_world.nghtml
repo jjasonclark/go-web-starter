@@ -6,4 +6,12 @@
     <img src="images/angular.png" alt="Angular logo">
     <img src="images/browserify.png" alt="Browserify logo">
   </div>
+
+  <div class="row" ng-show="loggedIn">
+    Login token: {{ authToken }}
+    <button class="btn btn-primary" ng-click="logout()"><span class="glyphicon glyphicon-log-out">&nbsp;Logout</button>
+  </div>
+  <div class="row" ng-hide="loggedIn">
+    <a class="btn btn-primary" ng-href="/app#!/login">Login</a>
+  </div>
 </div> <!-- /container -->

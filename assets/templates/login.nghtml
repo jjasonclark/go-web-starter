@@ -1,0 +1,53 @@
+<div class="container">
+  <h2 ng-show="!newUser" class="col-xs-12">Please sign in</h2>
+  <h2 ng-show="newUser" class="col-xs-12">Please register</h2>
+  <div class="row">
+    <label>
+      <input type="radio" ng-model="newUser" ng-value="false">
+      Sign in
+    </label>
+    <label>
+      <input type="radio" ng-model="newUser" ng-value="true">
+      Register
+    </label>
+  </div>
+
+  <div class="row login" ng-hide="newUser">
+    <form class="form form-signin" ng-submit="login()">
+      <div class="form-group">
+        <label for="username" class="sr-only">Username</label>
+        <input type="text" name="username" ng-model="username" class="form-control" placeholder="Username address" ng-focus="!username || username === ''" ng-disabled="!allowSubmit" ng-required="true" autofocus>
+      </div>
+      <div class="form-group">
+        <label for="password" class="sr-only">Password</label>
+        <input type="password" name="password" ng-model="password" class="form-control" placeholder="Password" ng-focus="username && username !== ''" ng-disabled="!allowSubmit" ng-required="true">
+      </div>
+      <button class="btn btn-lg btn-info btn-block" ng-disabled="!allowSubmit"><span class="glyphicon glyphicon-log-in"></span> &nbsp; Sign in</button>
+    </form>
+  </div>
+
+  <div class="row register" ng-show="newUser">
+    <form role="form" ng-submit="register()">
+      <div class="form-group">
+        <label for="username" class="sr-only">Username</label>
+        <input type="text" ng-model="username" class="form-control" ng-focus="!username || username === ''" placeholder="Username Address">
+      </div>
+
+      <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-6">
+          <div class="form-group">
+            <label for="password" class="sr-only">Password</label>
+            <input type="password" name="password" ng-model="password" class="form-control" ng-focus="username && username !== ''" placeholder="Password">
+          </div>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-6">
+          <div class="form-group">
+            <label for="passwordConfirmation" class="sr-only">Password Confirmation</label>
+            <input type="password" name="passwordConfirmation" ng-model="passwordConfirmation" class="form-control" placeholder="Confirm Password">
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-lg btn-info btn-block"><span class="glyphicon glyphicon-user"></span> &nbsp; Register</button>
+    </form>
+  </div>
+</div>

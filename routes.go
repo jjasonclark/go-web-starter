@@ -13,6 +13,9 @@ func createRouter() http.Handler {
 
 func apiRoutes() http.Handler {
 	mux := http.NewServeMux()
+	lh := loginHandler()
+	mux.Handle("/login", lh)
+	mux.Handle("/login/", lh)
 	mux.HandleFunc("/", notFoundHandlerFunc)
 	return mux
 }
