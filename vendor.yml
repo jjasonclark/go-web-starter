@@ -27,6 +27,8 @@ vendors:
   rev: 792786c7400a136282c1664665ae0a8db921c6c2
 - path: github.com/stretchr/testify
   rev: 6fe211e493929a8aac0469b93f28b1d0688a9a3a
+- path: golang.org/x/crypto
+  rev: 3fbbcd23f1cb824e69491a5930cfeff09b12f4d2
 - path: golang.org/x/sys
   rev: a60af9cbbc6ab800af4f2be864a31f423a0ae1f2
 - path: gopkg.in/check.v1
