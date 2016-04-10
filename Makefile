@@ -12,7 +12,7 @@ BINDATA_BIN = go-bindata -debug
 DOCKER_COMPOSE_BIN = docker-compose
 GIT_BIN = git
 GOBUILD = go build
-GULP_BIN = $(NODE_BIN) ./node_modules/gulp/bin/gulp.js
+GULP_BIN = ./node_modules/.bin/gulp
 NODE_BIN = node
 
 OUTPUT_NAME = app
