@@ -22,7 +22,9 @@ VERSION = $(shell $(NODE_BIN) -e "console.log(require('./package.json')['version
 BUILD_SHA = $(shell $(GIT_BIN) rev-parse HEAD)
 
 ifdef DOCKER
-GOBUILD = GOOS=linux GOARCH=386 go build -a -tags netgo -installsuffix netgo
+DOCKER_BUILD_PATH = /go/src/github.com/jjasonclark/go-web-starter
+GOBUILD = docker run --rm -v $(BASE_PATH):$(DOCKER_BUILD_PATH) -w $(DOCKER_BUILD_PATH) golang:1.6-alpine go build -a -tags netgo -installsuffix netgo
+DIST_PATH = $(DOCKER_BUILD_PATH)/dist
 PRODUCTION = 1
 endif
 
