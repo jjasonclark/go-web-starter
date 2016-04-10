@@ -5,7 +5,8 @@ angular.module("app").
     ];
 
     function isAPIPath(url) {
-      for(var path in whiteListPrefixes) {
+      for(var index in whiteListPrefixes) {
+        var path = whiteListPrefixes[index];
         var result = url.split(path);
         if (result.length >= 2 && result[0] === "") {
           return true;
