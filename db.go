@@ -33,4 +33,6 @@ func (c dbConfig) createDB() {
 }
 
 func (c dbConfig) createTables() {
+	r.TableCreate("users").Exec(dbSession)
+	r.TableCreate("tokens").Exec(dbSession)
 }
