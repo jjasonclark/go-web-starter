@@ -1,20 +1,33 @@
 angular.module('app').
-  factory('authTokenService', function() {
-    var tokens = [];
+  factory('authTokenService', function($window) {
+    var storageKey = "authToken";
+    var token = getStoredToken();
 
     function get() {
-      if (tokens.lenth > 0) {
-        return tokens[tokens.length - 1];
-      }
-      return "";
+      return token;
     }
 
-    function push(token) {
-      tokens.push(token);
+    function set(newValue) {
+      token = newValue;
+      setStoredToken();
+    }
+
+    function getStoredToken() {
+      return $window.localStorage.getItem(storageKey) || "";
+    }
+
+    function setStoredToken() {
+      $window.localStorage.setItem(storageKey, token);
+    }
+
+    function clear() {
+      token = undefined;
+      $window.localStorage.removeItem(storageKey);
     }
 
     return {
       get: get,
-      push: push
+      set: set,
+      clear: clear
     };
   });
