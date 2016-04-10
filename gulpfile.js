@@ -13,7 +13,6 @@ var copiedFiles = require('./config/copiedFiles.json');
 var packageJson = require('./package.json');
 
 var config = {
-  outputName: 'app',
   templateCache: {
     file: "templates.js",
     options: {
@@ -23,7 +22,6 @@ var config = {
       }
     }
   },
-  packedAssetName: 'assets.go',
   serveLiveAssets: !$.util.env.production,
   appName: packageJson.name,
   version: packageJson.version
@@ -39,8 +37,7 @@ var paths = {
   goTemplates: "templates/**.*",
   outputBase: "build",
   goOutput: "build/templates",
-  assetOutput: "build/public",
-  distOutput: "dist"
+  assetOutput: "build/public"
 };
 
 var cachebust;
@@ -53,17 +50,6 @@ if (config.serveLiveAssets) {
 } else {
   cachebust = new $.cachebust();
 }
-
-gulp.task('clean', function() {
-  return gulp.src([
-      paths.goOutput,
-      paths.assetOutput,
-      paths.distOutput,
-      paths.outputBase + "/" + config.packedAssetName,
-      paths.outputBase + "/" + config.outputName
-    ]).
-    pipe($.clean());
-});
 
 gulp.task("copy-files", function(cb) {
   var files = _.map(copiedFiles, function(fileGlobs, dest) {
