@@ -3,7 +3,12 @@ angular.module('app').config(function($routeProvider, $locationProvider, $httpPr
   $locationProvider.html5Mode(false).hashPrefix("!");
   $routeProvider.
     when("/", {
+      controller: "RootController",
       templateUrl: "templates/hello_world.html"
+    }).
+    when("/login", {
+      controller: 'LoginController',
+      templateUrl: "templates/login.html"
     }).
     otherwise("/");
 });
