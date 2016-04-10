@@ -1,5 +1,6 @@
 angular.module("app").
   factory('apiInterceptor', function() {
+    var jsonContentType = 'application/json;charset=utf-8';
     var whiteListPrefixes = [
       '/api/'
     ];
@@ -17,8 +18,8 @@ angular.module("app").
 
     function addAPIHeaders(config) {
       config.headers['X-Requested-With'] = "XMLHttpRequest";
-      config.headers['CONTENT-TYPE'] = 'application/json;charset=utf-8';
-      config.headers['ACCEPT'] = 'application/json;charset=utf-8';
+      config.headers['Content-Type'] = jsonContentType;
+      config.headers.accept = jsonContentType;
       return config;
     }
 
