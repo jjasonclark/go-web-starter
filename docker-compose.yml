@@ -1,0 +1,14 @@
+version: "2"
+services:
+  app:
+    build: .
+    command: ["/app/app", "-dbhost", "db"]
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  db:
+    image: rethinkdb:2.2
+    ports:
+      - "28015"
+      - "8080:8080"
